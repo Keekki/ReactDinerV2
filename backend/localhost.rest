@@ -1,0 +1,58 @@
+# Create a new menu item
+POST http://localhost:5000/menuitems
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "name": "Nuggets",
+  "price": 9.99,
+  "description": "NUGGIES",
+  "image": "./images/image.jpg"
+}
+
+# Update an existing menu item
+PUT http://localhost:3000/menuitems/{1}
+Content-Type: application/json
+Authorization: Bearer {{TOKEN}}
+
+{
+  "name": "Updated Menu Item",
+  "price": 11.99,
+  "description": "An updated description",
+  "image": "./images/updated-image.jpg"
+}
+
+# Delete a menu item
+DELETE http://localhost:3000/menuitems/{1}
+Authorization: Bearer {{TOKEN}}
+
+
+###
+# Sign up a new user
+POST http://localhost:5000/signup
+Content-Type: application/json
+
+{
+  "name": "Esko Mörkö",
+  "email": "esko@example.com",
+  "password": "password"
+}
+
+###
+# @name login
+# Log in with the newly created user
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "email": "esko@example.com",
+  "password": "password"
+}
+
+###
+# Access a protected route with the Bearer token
+GET http://localhost:5000/protected-route
+Authorization: Bearer {{TOKEN}}
+
+
+@TOKEN = {{login.response.body.token}}

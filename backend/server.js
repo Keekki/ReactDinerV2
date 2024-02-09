@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const menuRoutes = require("./routes/menuRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 require("dotenv").config();
 
@@ -11,6 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/api", menuRoutes);
+app.use("/api", userRoutes);
 
 // Start the server only if not in the test environment
 if (process.env.NODE_ENV !== "test") {
