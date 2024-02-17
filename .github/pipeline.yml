@@ -13,7 +13,7 @@ jobs:
     steps:
       # get the code from the repository unto the machine
       - name: Fetch code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       # Install dependencies in backend folder
       - name: Install dependencies
