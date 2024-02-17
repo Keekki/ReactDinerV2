@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    # Set a timeout in case something get stuck or hang in the tests
+    timeout-minutes: 5
+    steps:
+      # get the code from the repository unto the machine
+      - name: Fetch code
+        uses: actions/checkout@v4
+
+      # Install dependencies in backend folder
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+
+      # Create .env file for the test job in backend folder
+      - name: Create backend testing env file
+        run: echo "${{ secrets.TEST_JOB_ENV }}" > ./.env
+        working-directory: ./backend
+
+      # Run backend tests in backend folder
+      - name: Run backend tests
+        run: npm test
+        working-directory: ./backend
