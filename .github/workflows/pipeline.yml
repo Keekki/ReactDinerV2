@@ -67,10 +67,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push the Backend Image
+      - name: Build the Backend Image
         uses: docker/build-push-action@v5.0.0
         with:
           context: ./backend
           file: ./backend/Dockerfile
-          push: true
+          push: false
           tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}"
