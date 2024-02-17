@@ -13,15 +13,21 @@ jobs:
     steps:
       # get the code from the repository unto the machine
       - name: Fetch code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
+      # Change directory to backend folder
+      - name: Change directory to backend
+        run: cd ./backend
+
+      # Install dependencies in backend folder
       - name: Install dependencies
         run: npm install
 
-      # Create .env file for the test job
+      # Create .env file for the test job in backend folder
       - name: Create backend testing env file
         run: |
-          echo "${{ secrets.TEST_JOB_ENV }}" > ./backend/.env
+          echo "${{ secrets.TEST_JOB_ENV }}" > ./.env
 
+      # Run backend tests in backend folder
       - name: Run backend tests
         run: npm test
