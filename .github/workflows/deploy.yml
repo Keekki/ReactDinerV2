@@ -70,15 +70,6 @@ jobs:
           sudo apt update
           sudo apt --assume-yes --no-install-recommends install openvpn openvpn-systemd-resolved rsync
 
-      # Create stack config and sync to the VM server
-      - name: Create and sync stack configuration
-        run: |
-          mkdir -p dine_backend
-          cp docker-compose.server.yml dine_backend/docker-compose.yml
-          echo "${{ secrets.PROD_ENV_FILE }}" > dine_backend/.env
-          echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}" >> dine_backend/.env
-          rsync -r dine_backend "${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }}:./"
-
       - name: Setup the VPN configs
         run: |
           echo "${{ secrets.VPN_CONFIG }}" > config.ovpn
@@ -97,6 +88,16 @@ jobs:
           echo "${{ secrets.DEPLOY_KEY_PRIVATE }}" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.REMOTE_SERVER }} >> ~/.ssh/known_hosts
+
+            # Create stack config and sync to the VM server
+
+      - name: Create and sync stack configuration
+        run: |
+          mkdir -p dine_backend
+          cp docker-compose.server.yml dine_backend/docker-compose.yml
+          echo "${{ secrets.PROD_ENV_FILE }}" > dine_backend/.env
+          echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}" >> dine_backend/.env
+          rsync -r dine_backend "${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }}:./"
 
       # SSH into VM server and bring up the stack
       - name: Start containers via SSH
