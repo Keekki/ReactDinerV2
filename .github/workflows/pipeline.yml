@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: TiTe-5G00EV16-3003/2024-practice-project-Keekki
+  BACKEND_IMAGE_NAME: tite-5g00ev16-3003/2024-practice-project-keekki
 
 jobs:
   test:
