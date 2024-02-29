@@ -1,18 +1,20 @@
+const app = require("./app");
+const path = require("path");
 const express = require("express");
-const bodyParser = require("body-parser");
+
 const cors = require("cors");
-const menuRoutes = require("./routes/menuRoutes");
-const userRoutes = require("./routes/userRoutes");
 
 require("dotenv").config();
 
-const app = express();
-
-app.use(bodyParser.json());
 app.use(cors());
 
-app.use("/api", menuRoutes);
-app.use("/api", userRoutes);
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "../build")));
+
+// All other GET requests not handled before will return our React app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../build", "index.html"));
+});
 
 // Start the server only if not in the test environment
 if (process.env.NODE_ENV !== "test") {
@@ -20,5 +22,3 @@ if (process.env.NODE_ENV !== "test") {
     console.log(`Server running on port ${process.env.PORT}`);
   });
 }
-
-module.exports = app;
