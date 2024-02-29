@@ -1,0 +1,63 @@
+.item-description {
+  grid-column: 3;
+  font-size: 1.3rem;
+  margin-right: 100px;
+}
+
+.item-price {
+  grid-column: 4;
+  font-size: 1.5rem;
+}
+
+.menu-item {
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: transform 0.3s ease;
+  width: 92%;
+  margin-left: 45px;
+  font-family: Garamond;
+  grid-template-columns: 1fr 2fr 2fr 1fr 1fr;
+  gap: 1em;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+  color: orange;
+}
+
+.menu-item h2 {
+  grid-column: 2;
+  font-size: 1.8rem;
+}
+
+.menu-item img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  margin-right: 1rem;
+  grid-column: 1;
+}
+
+.menu-item button {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  grid-column: 5;
+  height: 60px;
+  width: 150px;
+  font-family: Garamond;
+  font-size: 1.2rem;
+}
+
+.menu-item button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transition: ease-in 0.2s;
+}

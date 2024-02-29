@@ -1,0 +1,56 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  color: #fff;
+  z-index: 1;
+}
+
+.header.homepage {
+  background-color: transparent;
+}
+
+.header.other {
+  background-color: black;
+}
+
+.logo {
+  font-size: 3rem;
+  color: orange;
+  font-family: "Brush Script MT";
+  margin-left: 140px;
+  text-decoration: none; /* Removes the underline */
+}
+
+.logo:hover {
+  color: orange; /* Keeps the color the same on hover */
+}
+
+.logo:visited {
+  color: orange; /* Keeps the color the same after the link has been visited */
+}
+
+.logo-link {
+  text-decoration: none; /* Removes the underline */
+  color: inherit;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 80px;
+  margin-right: 140px;
+  font-family: Garamond;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.8rem;
+}
+
+.nav-links a:hover {
+  color: orange;
+  transition: ease-in 0.2s;
+}
