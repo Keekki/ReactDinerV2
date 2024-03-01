@@ -3,6 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 // const { v4: uuidv4 } = require("uuid");
 
+require("dotenv").config();
+
 const menuRoutes = require("./routes/menuRoutes");
 const userRoutes = require("./routes/userRoutes");
 

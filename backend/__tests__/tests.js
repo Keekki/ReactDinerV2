@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../server");
+const app = require("../app");
 const jwt = require("jsonwebtoken");
 const db = require("../db/database.js");
 
@@ -137,7 +137,7 @@ describe(
     it("should return a proper error message for an invalid API route", async () => {
       const response = await request(app).get("/api/nonexistentroute");
       expect(response.statusCode).toBe(404);
-      expect(response.body).toEqual({});
+      expect(response.body).toEqual({ message: "Not found" });
     });
 
     // Test to check if updating a non-existing menu item returns a proper error message
