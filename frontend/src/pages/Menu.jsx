@@ -7,41 +7,31 @@ import "../styling/Menu.css";
 const Menu = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch("https://reactdinebackend.onrender.com/api/dishes")
-      .then((response) => response.json())
+    fetch("http://localhost:5000/api/menuitems")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => {
         setItems(data);
         setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        setError(error);
         setIsLoading(false);
       });
   }, []);
 
   const mainDishes = [
-    "d1",
-    "d2",
-    "d3",
-    "d4",
-    "d5",
-    "d6",
-    "d7",
-    "d8",
-    "d9",
-    "d10",
-    "d11",
-    "d13",
-    "d14",
-    "d16",
-    "d17",
-    "d18",
-    "d20",
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 20,
   ];
-  const desserts = ["d12", "d15", "d19"];
+  const desserts = [12, 15, 19];
 
   if (isLoading) {
     return (

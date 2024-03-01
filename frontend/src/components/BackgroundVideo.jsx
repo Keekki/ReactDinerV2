@@ -22,7 +22,7 @@ const BackgroundVideo = () => {
     <div className="background-video">
       <video
         ref={videoRef}
-        src={`https://reactdinebackend.onrender.com/assets/videos/${videos[currentVideo]}`}
+        src={`http://localhost:5000/assets/videos/${videos[currentVideo]}`}
         autoPlay
         loop
         muted
