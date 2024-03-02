@@ -1,14 +1,15 @@
 // const fs = require("node:fs/promises");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 // const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
+const app = express();
+app.use(cors());
 
 const menuRoutes = require("./routes/menuRoutes");
 const userRoutes = require("./routes/userRoutes");
-
-const app = express();
 
 app.use(bodyParser.json());
 app.use(express.static("./public"));
