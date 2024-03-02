@@ -9,7 +9,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  BACKEND_IMAGE_NAME: tite-5g00ev16-3003/2024-practice-project-keekki
+  BACKEND_IMAGE_NAME: tite-5g00ev16-3003/2024-practice-project-keekki-backend
+  FRONTEND_IMAGE_NAME: tite-5g00ev16-3003/2024-practice-project-keekki-frontend
 
 jobs:
   test:
@@ -22,9 +23,14 @@ jobs:
         uses: actions/checkout@v4
 
       # Install dependencies in backend folder
-      - name: Install dependencies
+      - name: Install dependencies for backend
         run: npm install
         working-directory: ./backend
+
+      # Install dependencies in frontend folder
+      - name: Install dependencies for frontend
+        run: npm install
+        working-directory: ./frontend
 
       # Create .env file for the test job in backend folder
       - name: Create backend testing env file
@@ -74,3 +80,11 @@ jobs:
           file: ./backend/Dockerfile
           push: false
           tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}"
+
+      - name: Build the Frontend Image
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: ./frontend
+          file: ./backend/Dockerfile
+          push: false
+          tags: "${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}"
