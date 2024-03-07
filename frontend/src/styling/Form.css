@@ -1,4 +1,4 @@
-.order-form {
+.form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,19 +9,22 @@
   margin-top: -50px;
 }
 
-.order-form form {
+.form form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.order-form h2 {
+.form h2 {
   font-family: Garamond;
-  margin-right: 190px;
+  width: 100%;
+  text-align: left;
   color: orange;
+  margin-bottom: 15px;
+  margin-left: 87vh;
 }
 
-.order-form .MuiTextField-root {
+.form .MuiTextField-root {
   width: 300px;
   color: white;
 }
