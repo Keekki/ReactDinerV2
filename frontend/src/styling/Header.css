@@ -15,6 +15,20 @@
   background-color: black;
 }
 
+.login-icon {
+  margin-left: 10px;
+}
+
+.login-link {
+  color: orange !important;
+  font-size: 1.2rem !important;
+  margin-top: 10px !important;
+}
+
+.login-link:hover {
+  color: white !important;
+}
+
 .logo {
   font-size: 3rem;
   color: orange;
@@ -40,7 +54,7 @@
   list-style: none;
   display: flex;
   gap: 80px;
-  margin-right: 140px;
+  margin-right: 50px;
   font-family: Garamond;
 }
 
@@ -53,4 +67,8 @@
 .nav-links a:hover {
   color: orange;
   transition: ease-in 0.2s;
+}
+
+.nav-links li.login-li {
+  margin-top: 8px;
 }

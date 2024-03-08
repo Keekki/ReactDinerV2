@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
 import Cart from "./Cart";
 import "../styling/Header.css";
 
@@ -33,6 +36,12 @@ const Header = () => {
           </li>
           <li>
             <Link to="/about">About us</Link>
+          </li>
+          <li className="login-li">
+            <Link to="/login" className="login-link">
+              Log In
+              <FontAwesomeIcon icon={faRightToBracket} className="login-icon" />
+            </Link>
           </li>
         </ul>
       </nav>
