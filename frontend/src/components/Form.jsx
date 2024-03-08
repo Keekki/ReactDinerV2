@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../styling/Form.css";
 
-const Form = ({ fields, onSubmit, submitLabel, title }) => {
+const Form = ({ fields, submitHandler, submitLabel, title }) => {
   const [values, setValues] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
   );
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false); // Track if the form has been submitted
-  const history = useHistory(); // Get the history instance
-  const location = useLocation(); // Get the current location
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -34,15 +32,7 @@ const Form = ({ fields, onSubmit, submitLabel, title }) => {
     setErrors(newErrors);
     setSubmitted(true); // Set submitted to true after attempting to submit
     if (Object.keys(newErrors).length === 0) {
-      onSubmit(values);
-      // Redirect based on the current path
-      if (location.pathname === "/signup") {
-        history.push("/login");
-      } else if (location.pathname === "/login") {
-        history.push("/");
-      } else if (location.pathname === "/order") {
-        history.push("/confirm-order");
-      }
+      submitHandler(values); // Use the submitHandler prop to handle submission
     }
   };
 
