@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import "../styling/Form.css";
 
@@ -34,6 +34,19 @@ const Form = ({ fields, onSubmit, submitLabel, title }) => {
       onSubmit(values);
     }
   };
+
+  useEffect(() => {
+    const h2Element = document.querySelector(".form h2");
+    if (h2Element) {
+      if (h2Element.textContent === "Customer Info") {
+        h2Element.style.marginLeft = "-150px";
+      } else if (h2Element.textContent === "Log In!") {
+        h2Element.style.marginLeft = "-220px";
+      } else if (h2Element.textContent === "Sign Up") {
+        h2Element.style.marginLeft = "-215px";
+      }
+    }
+  }, [title]);
 
   return (
     <div className="form">
