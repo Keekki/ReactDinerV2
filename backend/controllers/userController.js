@@ -106,6 +106,7 @@ const loginUser = async (req, res) => {
 
   try {
     const results = await new Promise((resolve, reject) => {
+      console.log("Querying user with email:", email);
       db.all("SELECT * FROM users WHERE email = ?", [email], (err, rows) => {
         if (err) {
           reject(err);
@@ -115,16 +116,19 @@ const loginUser = async (req, res) => {
       });
     });
 
+    console.log("results: " + JSON.stringify(results));
+
     if (results.length === 0) {
       return res.status(401).json({ message: "Could not identify user" });
     }
 
     const identifiedUser = results[0];
 
+    console.log(password, identifiedUser.password_hash);
     // Comparing password with hash
     const valid = await bcrypt.compare(password, identifiedUser.password_hash);
     if (!valid) {
-      return res.status(401).json({ message: "Could not identify user" });
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
     // Create and return the token
