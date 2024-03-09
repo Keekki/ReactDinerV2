@@ -13,6 +13,7 @@ const OrderForm = () => {
   ];
 
   const handleOrderSubmit = (values) => {
+    // Ordering logic is still missing from the backend
     console.log("Order Form Submitted:", values);
     navigate("/confirm-order");
   };

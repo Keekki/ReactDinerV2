@@ -19,9 +19,24 @@ const SignUpForm = () => {
     },
   ];
 
-  const handleSignUpSubmit = (values) => {
-    console.log("Sign Up Form Submitted:", values);
-    navigate("/login"); // Use navigate for redirection
+  const handleSignUpSubmit = async (values) => {
+    console.log(values);
+    const response = await fetch("http://localhost:5000/api/users/signup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Sign Up Form Submitted:", data);
+      navigate("/login"); // Navigate to the login page
+    } else {
+      console.error("Signup didn't work");
+    }
   };
 
   return (
