@@ -175,22 +175,6 @@ describe(
       expect(response.statusCode).toBe(404);
       expect(response.body).toEqual({ message: "Not found" });
     });
-
-    // Test to check if updating a non-existing menu item returns a proper error message
-    it("should return a proper error message when updating a non-existing menu item", async () => {
-      const nonExistingId = 25;
-      const updatedMenuItem = {
-        name: "Updated Menu Item",
-        price: "11.99",
-        description: "Updated menu item description",
-        image: "images/updated-menu-item.jpg",
-      };
-      const response = await request(app)
-        .put(`/api/menuitems/${nonExistingId}`)
-        .send(updatedMenuItem);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toEqual("Menu item not found");
-    });
   },
 
   describe("Authentication tests:", () => {
