@@ -163,6 +163,9 @@ describe(
         name: "Testi User",
         email: "test1@example.com",
         password: "password1234",
+        street: "Kuntokatu",
+        postalCode: "33250",
+        city: "Tampere",
       };
       const response = await request(app)
         .post("/api/users/signup")
@@ -173,8 +176,8 @@ describe(
 
     it("should log in an existing user", async () => {
       const userData = {
-        email: "test@example.com",
-        password: "password123", // Use the same password as set above
+        email: "test1@example.com",
+        password: "password1234", // Use the same password as set above
       };
 
       const response = await request(app)
