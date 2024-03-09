@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 import "../styling/Form.css";
 
 const Form = ({ fields, submitHandler, submitLabel, title }) => {
@@ -14,7 +15,7 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newErrors = {};
     fields.forEach((field) => {
@@ -28,6 +29,26 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
       values.password !== values.passwordConfirmation
     ) {
       newErrors.passwordConfirmation = "Passwords do not match.";
+    }
+    // Check if credentials are ok
+    const response = await submitHandler(values); // Await the submitHandler call
+    console.log("Response status:", response.status);
+    if (response.status === 401) {
+      newErrors.password = "Password is incorrect.";
+    } else if (response.status === 200) {
+      toast.success("Logged in!", {
+        style: {
+          border: "1px solid orange",
+          padding: "16px",
+          color: "white",
+          background: "black",
+          marginLeft: "1100px",
+        },
+        iconTheme: {
+          primary: "orange",
+          secondary: "black",
+        },
+      });
     }
     setErrors(newErrors);
     setSubmitted(true); // Set submitted to true after attempting to submit

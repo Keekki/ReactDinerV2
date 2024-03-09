@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -24,23 +23,11 @@ const LoginForm = () => {
       if (response.status === 200) {
         // On successful login, redirect the user
         navigate("/");
-        toast.success("Logged in!", {
-          style: {
-            border: "1px solid orange",
-            padding: "16px",
-            color: "white",
-            background: "black",
-            marginLeft: "1100px",
-          },
-          iconTheme: {
-            primary: "orange",
-            secondary: "black",
-          },
-        });
       } else {
         // Handle unexpected status codes
         setError("An unexpected error occurred. Please try again.");
       }
+      return response;
     } catch (error) {
       if (error.response && error.response.status === 401) {
         // If the server responds with a 401 status, it means the credentials are incorrect
