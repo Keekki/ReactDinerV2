@@ -72,3 +72,16 @@
 .nav-links li.login-li {
   margin-top: 8px;
 }
+
+.user-menu {
+  color: orange !important;
+  font-size: 1.2rem !important;
+  margin-top: 10px !important;
+  position: relative;
+  top: -10px;
+  cursor: pointer;
+}
+
+.user-menu:hover {
+  color: white !important;
+}

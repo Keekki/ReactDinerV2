@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import Form from "../components/Form";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../components/UserContext";
+import Form from "../components/Form";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { setUser, setUserAndStore } = useContext(UserContext);
   const [error, setError] = useState(""); // State to hold any error messages
   const fields = [
     { name: "email", label: "Email", required: true, type: "email" },
@@ -21,6 +23,9 @@ const LoginForm = () => {
         body: JSON.stringify(values),
       });
       if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+        setUser(data);
         // On successful login, redirect the user
         navigate("/");
       } else {

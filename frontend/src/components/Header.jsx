@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 
+import { UserContext } from "./UserContext";
 import Cart from "./Cart";
 import "../styling/Header.css";
 
 const Header = () => {
+  const { user, setUser } = useContext(UserContext);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
   const [isCartOpen, setCartOpen] = useState(false);
+  const [isUserMenuOpen, setUserMenuOpen] = useState(false);
 
   const closeCart = () => setCartOpen(false);
+
+  const handleLogout = () => {
+    logoutUser();
+  };
 
   return (
     <header className={`header ${isHomePage ? "homepage" : "other"}`}>
@@ -38,10 +45,27 @@ const Header = () => {
             <Link to="/about">About us</Link>
           </li>
           <li className="login-li">
-            <Link to="/login" className="login-link">
-              Log In
-              <FontAwesomeIcon icon={faRightToBracket} className="login-icon" />
-            </Link>
+            {user ? (
+              <div
+                className="user-menu"
+                onClick={() => setUserMenuOpen(!isUserMenuOpen)}
+              >
+                {user.name}
+                {isUserMenuOpen && (
+                  <div className="user-menu-popup">
+                    <button onClick={handleLogout}>Log Out</button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="login-link">
+                Log In
+                <FontAwesomeIcon
+                  icon={faRightToBracket}
+                  className="login-icon"
+                />
+              </Link>
+            )}
           </li>
         </ul>
       </nav>
