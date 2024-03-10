@@ -141,9 +141,12 @@ const loginUser = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res
-      .status(200)
-      .json({ id: identifiedUser.id, email: identifiedUser.email, token });
+    res.status(200).json({
+      id: identifiedUser.id,
+      email: identifiedUser.email,
+      name: identifiedUser.name,
+      token,
+    });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
