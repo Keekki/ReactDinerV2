@@ -34,6 +34,9 @@ db.serialize(() => {
     name VARCHAR(100) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password_hash VARCHAR(60) NOT NULL,
+    street VARCHAR(60),
+    postalCode VARCHAR(10),
+    city VARCHAR(30),
     admin BOOLEAN NOT NULL DEFAULT 0, -- 0 for false, 1 for true
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -17,11 +17,10 @@
 
 .form h2 {
   font-family: Garamond;
-  width: 100%;
-  text-align: left;
   color: orange;
-  margin-bottom: 15px;
-  margin-left: 87vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .form .MuiTextField-root {

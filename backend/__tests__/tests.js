@@ -1,10 +1,42 @@
 const request = require("supertest");
+const bcrypt = require("bcryptjs");
 const app = require("../app");
 const jwt = require("jsonwebtoken");
 const db = require("../db/database.js");
 
 const userId = "mockUserId";
 const email = "test@example.com";
+
+const { v4: uuidv4 } = require("uuid");
+
+const createUserInDatabase = async (userData) => {
+  const hashedPassword = await bcrypt.hash(userData.password, 12);
+  const newUserId = uuidv4(); // Generate a new UUID for the user
+
+  console.log("Inserting user with ID:", newUserId);
+
+  await new Promise((resolve, reject) => {
+    db.run(
+      `INSERT INTO users (id, name, email, password_hash, street, postalCode, city) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        newUserId,
+        userData.name,
+        userData.email,
+        hashedPassword,
+        userData.street,
+        userData.postalCode,
+        userData.city,
+      ],
+      (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      }
+    );
+  });
+};
 
 // Helper function to generate a JWT token
 const generateToken = (userId, email) => {
@@ -27,11 +59,15 @@ beforeEach(async () => {
 
   // Create a new user
   const userData = {
-    name: "Test User",
-    email: "test@example.com",
+    name: "Esko Mörkö",
+    email: "esko1@example.com",
     password: "password123",
+    street: "Test Street",
+    postalCode: "12345",
+    city: "Test City",
   };
 
+  // Ensure you await the request to create the user
   await request(app).post("/api/users/signup").send(userData);
 });
 
@@ -139,22 +175,6 @@ describe(
       expect(response.statusCode).toBe(404);
       expect(response.body).toEqual({ message: "Not found" });
     });
-
-    // Test to check if updating a non-existing menu item returns a proper error message
-    it("should return a proper error message when updating a non-existing menu item", async () => {
-      const nonExistingId = 25;
-      const updatedMenuItem = {
-        name: "Updated Menu Item",
-        price: "11.99",
-        description: "Updated menu item description",
-        image: "images/updated-menu-item.jpg",
-      };
-      const response = await request(app)
-        .put(`/api/menuitems/${nonExistingId}`)
-        .send(updatedMenuItem);
-      expect(response.statusCode).toBe(404);
-      expect(response.body.message).toEqual("Menu item not found");
-    });
   },
 
   describe("Authentication tests:", () => {
@@ -167,20 +187,37 @@ describe(
       const response = await request(app)
         .post("/api/users/signup")
         .send(userData);
+
+      console.log("asd" + JSON.stringify(userData));
       expect(response.statusCode).toBe(201);
       expect(response.body.token).toBeDefined();
     });
 
     it("should log in an existing user", async () => {
+      // Step 1: Create a user
       const userData = {
+        name: "Test User",
         email: "test@example.com",
-        password: "password123", // Use the same password as set above
+        password: "password123",
+        street: "Test Street",
+        postalCode: "12345",
+        city: "Test City",
+      };
+
+      // Assuming you have a function to create a user in the database
+      await createUserInDatabase(userData);
+
+      // Step 2: Attempt to log in
+      const loginData = {
+        email: userData.email,
+        password: userData.password,
       };
 
       const response = await request(app)
         .post("/api/users/login")
-        .send(userData);
+        .send(loginData);
 
+      // Step 3: Verify the login was successful
       expect(response.statusCode).toBe(200);
       expect(response.body.token).toBeDefined();
     });

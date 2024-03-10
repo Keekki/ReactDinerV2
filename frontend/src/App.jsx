@@ -11,6 +11,7 @@ import OrderForm from "./pages/OrderForm";
 import ConfirmOrder from "./pages/ConfirmOrder";
 import LoginForm from "./pages/LoginForm";
 import SignUpForm from "./pages/SignUpForm";
+import { UserContextProvider } from "./components/UserContext";
 
 const App = () => {
   const [items, setItems] = useState([]);
@@ -23,22 +24,24 @@ const App = () => {
   }, []);
 
   return (
-    <CartProvider items={items}>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/order" element={<OrderForm />} />
-          <Route path="/confirm-order" element={<ConfirmOrder />} />
-          <Route path="/about" element={<AboutUs />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/signup" element={<SignUpForm />} />
-        </Routes>
-        <Toaster position="top-center" reverseOrder={false} />
-      </Router>
-    </CartProvider>
+    <UserContextProvider>
+      <CartProvider items={items}>
+        <Router>
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/order" element={<OrderForm />} />
+            <Route path="/confirm-order" element={<ConfirmOrder />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/signup" element={<SignUpForm />} />
+          </Routes>
+          <Toaster position="top-center" reverseOrder={false} />
+        </Router>
+      </CartProvider>
+    </UserContextProvider>
   );
 };
 
