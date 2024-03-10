@@ -57,6 +57,7 @@
   cursor: pointer;
   padding: 0;
   font-size: 1rem;
+  font-family: Garamond;
   display: inline-flex; /* Align items horizontally */
   align-items: center; /* Center items vertically */
   transition: color 0.3s ease-in; /* Apply transition to color */
@@ -108,11 +109,18 @@
   position: relative;
   top: -10px;
   cursor: pointer;
+  font-family: Garamond;
 }
 
 .user-menu:hover {
   color: white !important;
   transition: 0.3s ease-in;
+}
+
+.user-menu a {
+  font-size: 1.1rem !important;
+  color: white !important;
+  cursor: default !important;
 }
 
 .user-menu-popup {

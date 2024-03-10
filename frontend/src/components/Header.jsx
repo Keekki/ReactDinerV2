@@ -53,6 +53,7 @@ const Header = () => {
                 {user.name}
                 <FontAwesomeIcon icon={faUser} className="login-icon" />
                 <div className="user-menu-popup">
+                  <a>Your account:</a>
                   <button onClick={handleLogout} className="logout-button">
                     Log Out
                     <FontAwesomeIcon
