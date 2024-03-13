@@ -1,7 +1,8 @@
 const request = require("supertest");
 const bcrypt = require("bcryptjs");
-const app = require("../app");
+const nock = require("nock");
 const jwt = require("jsonwebtoken");
+const app = require("../app");
 const db = require("../db/database.js");
 
 const userId = "mockUserId";
@@ -282,6 +283,41 @@ describe(
           "message",
           "Missing data: Email, name, street, postal code or city is missing."
         );
+      });
+
+      describe("Order Creation and Email Sending", () => {
+        it("should create a new order and send a confirmation email", async () => {
+          // Mock the email sending request
+          nock("https://api.emailservice.com").post("/send").reply(200, {
+            message: "Email sent successfully",
+          });
+
+          // Simulate the order creation request
+          const orderData = {
+            order: {
+              customer: {
+                name: "Test User",
+                email: "test@example.com",
+                street: "123 Test St",
+                postalCode: "12345",
+                city: "Test City",
+              },
+              items: [
+                {
+                  name: "Test Item",
+                  price: 10.99,
+                },
+              ],
+            },
+          };
+
+          const response = await request(app)
+            .post("/api/orders")
+            .send(orderData);
+
+          // Assert the response status code to ensure the request was processed successfully
+          expect(response.statusCode).toEqual(201);
+        });
       });
     })
   )

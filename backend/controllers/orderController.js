@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const db = require("../db/database.js");
+const { sendEmail } = require("../email_conf/emailService.js");
 
 const createOrder = async (req, res) => {
   const orderData = req.body.order;
@@ -58,6 +59,18 @@ const createOrder = async (req, res) => {
       res.status(201).json({ message: "Order created!" });
     }
   );
+
+  const emailOptions = {
+    from: process.env.EMAIL,
+    to: newOrder.customer.email,
+    subject: "Order Confirmation",
+    text: "Your order has been placed!\n\nALERT! This is a mock message from a throwaway account created\n\nonly to present a functionality in the ReactDine app!!\n\nNOTHING HAS BEEN ORDERED!",
+  };
+
+  console.log("About to create transporter");
+  sendEmail(emailOptions)
+    .then(() => console.log("Email sent successfully"))
+    .catch((error) => console.error("Failed to send email: ", error));
 };
 
 module.exports = {
