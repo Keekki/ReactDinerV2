@@ -1,8 +1,6 @@
-// const fs = require("node:fs/promises");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const { v4: uuidv4 } = require("uuid");
 
 require("dotenv").config();
 const app = express();
@@ -10,6 +8,7 @@ app.use(cors());
 
 const menuRoutes = require("./routes/menuRoutes");
 const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 app.use(bodyParser.json());
 app.use(express.static("./public"));
@@ -18,6 +17,7 @@ app.use("/assets/videos", express.static("public/videos")); // Serve static file
 
 app.use("/api", menuRoutes);
 app.use("/api", userRoutes);
+app.use("/api", orderRoutes);
 
 app.get("/healthCheck", (req, res) => {
   res.status(200).send("all good");
