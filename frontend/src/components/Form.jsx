@@ -7,7 +7,10 @@ import "../styling/Form.css";
 const Form = ({ fields, submitHandler, submitLabel, title }) => {
   // Initialize the form values state based on the fields prop
   const [values, setValues] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: field.value }), {})
+    fields.reduce(
+      (acc, field) => ({ ...acc, [field.name]: field.value || "" }),
+      {}
+    )
   );
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -15,7 +18,10 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
   // Update form values state when fields prop changes
   useEffect(() => {
     setValues(
-      fields.reduce((acc, field) => ({ ...acc, [field.name]: field.value }), {})
+      fields.reduce(
+        (acc, field) => ({ ...acc, [field.name]: field.value || "" }),
+        {}
+      )
     );
   }, [fields]);
 
@@ -41,6 +47,7 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
     }
     // Check if credentials are ok
     const response = await submitHandler(values); // Await the submitHandler call
+
     if (response.status === 401) {
       newErrors.password = "Password is incorrect.";
     } else if (response.status === 200) {

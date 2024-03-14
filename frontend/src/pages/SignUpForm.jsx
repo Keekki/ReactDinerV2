@@ -30,8 +30,6 @@ const SignUpForm = () => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      console.log("Sign Up Form Submitted:", data);
       navigate("/login"); // Navigate to the login page
     } else {
       console.error("Signup didn't work");
