@@ -27,7 +27,6 @@ const OrderForm = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Fetched user details:", data);
           setFormData({
             name: data.name || "",
             email: data.email || "",
@@ -35,7 +34,6 @@ const OrderForm = () => {
             postalCode: data.postalCode || "",
             city: data.city || "",
           });
-          console.log("Updated name state:", data.name);
         })
         .catch((error) =>
           console.error("Failed to fetch user details:", error)
@@ -55,8 +53,6 @@ const OrderForm = () => {
     },
     { name: "city", label: "City", required: true, value: formData.city },
   ];
-
-  console.log("fields: ", fields);
 
   const handleOrderSubmit = (values) => {
     const orderData = {

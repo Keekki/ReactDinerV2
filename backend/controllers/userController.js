@@ -150,12 +150,6 @@ const loginUser = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
   const userId = req.params.userId; // Get the user ID from the verified token
-  console.log("Requested user ID:", userId);
-
-  // // Check if the authenticated user is requesting their own details
-  // if (req.user.id !== userId) {
-  //   return res.status(403).json({ message: "Forbidden" });
-  // }
 
   try {
     const results = await new Promise((resolve, reject) => {

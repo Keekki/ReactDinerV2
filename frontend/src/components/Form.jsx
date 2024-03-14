@@ -41,7 +41,6 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
     }
     // Check if credentials are ok
     const response = await submitHandler(values); // Await the submitHandler call
-    console.log("Response status:", response.status);
     if (response.status === 401) {
       newErrors.password = "Password is incorrect.";
     } else if (response.status === 200) {

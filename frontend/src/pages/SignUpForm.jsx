@@ -20,7 +20,6 @@ const SignUpForm = () => {
   ];
 
   const handleSignUpSubmit = async (values) => {
-    console.log(values);
     const response = await fetch("http://localhost:5000/api/users/signup", {
       method: "POST",
       headers: {
