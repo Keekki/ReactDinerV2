@@ -1,7 +1,8 @@
 const request = require("supertest");
 const bcrypt = require("bcryptjs");
-const app = require("../app");
+const nock = require("nock");
 const jwt = require("jsonwebtoken");
+const app = require("../app");
 const db = require("../db/database.js");
 
 const userId = "mockUserId";
@@ -12,8 +13,6 @@ const { v4: uuidv4 } = require("uuid");
 const createUserInDatabase = async (userData) => {
   const hashedPassword = await bcrypt.hash(userData.password, 12);
   const newUserId = uuidv4(); // Generate a new UUID for the user
-
-  console.log("Inserting user with ID:", newUserId);
 
   await new Promise((resolve, reject) => {
     db.run(
@@ -177,49 +176,149 @@ describe(
     });
   },
 
-  describe("Authentication tests:", () => {
-    it("should sign up a new user", async () => {
-      const userData = {
-        name: "Testi User",
-        email: "test1@example.com",
-        password: "password1234",
-      };
-      const response = await request(app)
-        .post("/api/users/signup")
-        .send(userData);
+  describe(
+    "Authentication tests:",
+    () => {
+      it("should sign up a new user", async () => {
+        const userData = {
+          name: "Testi User",
+          email: "test1@example.com",
+          password: "password1234",
+        };
+        const response = await request(app)
+          .post("/api/users/signup")
+          .send(userData);
 
-      console.log("asd" + JSON.stringify(userData));
-      expect(response.statusCode).toBe(201);
-      expect(response.body.token).toBeDefined();
-    });
+        expect(response.statusCode).toBe(201);
+        expect(response.body.token).toBeDefined();
+      });
 
-    it("should log in an existing user", async () => {
-      // Step 1: Create a user
-      const userData = {
-        name: "Test User",
-        email: "test@example.com",
-        password: "password123",
-        street: "Test Street",
-        postalCode: "12345",
-        city: "Test City",
-      };
+      it("should log in an existing user", async () => {
+        // Step 1: Create a user
+        const userData = {
+          name: "Test User",
+          email: "test@example.com",
+          password: "password123",
+          street: "Test Street",
+          postalCode: "12345",
+          city: "Test City",
+        };
 
-      // Assuming you have a function to create a user in the database
-      await createUserInDatabase(userData);
+        // Assuming you have a function to create a user in the database
+        await createUserInDatabase(userData);
 
-      // Step 2: Attempt to log in
-      const loginData = {
-        email: userData.email,
-        password: userData.password,
-      };
+        // Step 2: Attempt to log in
+        const loginData = {
+          email: userData.email,
+          password: userData.password,
+        };
 
-      const response = await request(app)
-        .post("/api/users/login")
-        .send(loginData);
+        const response = await request(app)
+          .post("/api/users/login")
+          .send(loginData);
 
-      // Step 3: Verify the login was successful
-      expect(response.statusCode).toBe(200);
-      expect(response.body.token).toBeDefined();
-    });
-  })
+        // Step 3: Verify the login was successful
+        expect(response.statusCode).toBe(200);
+        expect(response.body.token).toBeDefined();
+      });
+    },
+
+    describe("Order tests", () => {
+      // Test for creating a new order
+      test("should create a new order", async () => {
+        const orderData = {
+          order: {
+            customer: {
+              name: "Test User",
+              email: "test@example.com",
+              street: "123 Test St",
+              postalCode: "12345",
+              city: "Test City",
+            },
+            items: [
+              {
+                name: "Test Item",
+                price: 10.99,
+              },
+            ],
+          },
+        };
+
+        const response = await request(app)
+          .post("/api/orders")
+          .send(orderData)
+          .expect("Content-Type", /json/)
+          .expect(201);
+
+        expect(response.body).toHaveProperty("message", "Order created!");
+      });
+
+      // Test for validation errors when creating an order
+      test("should return 400 for missing data", async () => {
+        const invalidOrderData = {
+          order: {
+            customer: {
+              name: "", // Missing name
+              email: "test@example.com",
+              street: "123 Test St",
+              postalCode: "12345",
+              city: "Test City",
+            },
+            items: [
+              {
+                name: "Test Item",
+                price: 10.99,
+              },
+            ],
+          },
+        };
+
+        const response = await request(app)
+          .post("/api/orders")
+          .send(invalidOrderData)
+          .expect("Content-Type", /json/)
+          .expect(400);
+
+        expect(response.body).toHaveProperty(
+          "message",
+          "Missing data: Email, name, street, postal code or city is missing."
+        );
+      });
+
+      describe("Order Creation and Email Sending", () => {
+        it("should create a new order and send a confirmation email", async () => {
+          // Mock the email sending request
+          nock("https://api.emailservice.com").post("/send").reply(200, {
+            message: "Email sent successfully",
+          });
+
+          // Simulate the order creation request
+          const orderData = {
+            order: {
+              customer: {
+                name: "Test User",
+                email: "test@example.com",
+                street: "123 Test St",
+                postalCode: "12345",
+                city: "Test City",
+              },
+              items: [
+                {
+                  name: "Test Item",
+                  price: 10.99,
+                },
+              ],
+            },
+          };
+
+          const response = await request(app)
+            .post("/api/orders")
+            .send(orderData);
+
+          // Assert the response status code to ensure the request was processed successfully
+          expect(response.statusCode).toEqual(201);
+        });
+      });
+    })
+  )
 );

@@ -51,6 +51,28 @@ db.serialize(() => {
     }
   );
 
+  db.run(
+    `CREATE TABLE IF NOT EXISTS orders (
+       id VARCHAR(36) NOT NULL,
+       customer_name VARCHAR(100) NOT NULL,
+       customer_email VARCHAR(50) NOT NULL,
+       customer_street VARCHAR(60) NOT NULL,
+       customer_postalCode VARCHAR(10) NOT NULL,
+       customer_city VARCHAR(30) NOT NULL,
+       items TEXT NOT NULL,
+       created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       PRIMARY KEY(id)
+    )`,
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log("Orders table created successfully.");
+      }
+    }
+  );
+
   fs.readFile("./db/init.sql", "utf8", (err, data) => {
     if (err) {
       console.error(err.message);
