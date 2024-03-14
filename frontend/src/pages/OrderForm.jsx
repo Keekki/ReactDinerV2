@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
+import CartContext from "../components/CartContext";
 
 const OrderForm = () => {
   const navigate = useNavigate();
+  const { cartItems } = useContext(CartContext);
+
   const fields = [
     { name: "name", label: "Name", required: true },
     { name: "email", label: "Email", required: true },
@@ -13,16 +16,21 @@ const OrderForm = () => {
   ];
 
   const handleOrderSubmit = (values) => {
-    // Ordering logic is still missing from the backend
-    console.log("Order Form Submitted:", values);
-    navigate("/confirm-order");
+    const orderData = {
+      customer: values,
+      items: Object.keys(cartItems).map((itemId) => ({
+        id: itemId,
+        quantity: cartItems[itemId],
+      })),
+    };
+    navigate("/confirm-order", { state: { order: orderData } });
   };
 
   return (
     <Form
       fields={fields}
       submitHandler={handleOrderSubmit}
-      submitLabel="Place Order"
+      submitLabel="Proceed to Confirmation"
       title="Customer Info"
     />
   );

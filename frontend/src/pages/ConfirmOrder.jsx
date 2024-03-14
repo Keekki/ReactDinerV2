@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   createTheme,
   ThemeProvider,
@@ -11,53 +12,6 @@ import {
 import { styled } from "@mui/system";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-hot-toast";
-
-// Create a mapping from item IDs to item names
-const itemNameMap = {
-  d1: "Mac & Cheese",
-  d2: "Margherita Pizza",
-  d3: "Caesar Salad",
-  d4: "Spaghetti Carbonara",
-  d5: "Veggie Burger",
-  d6: "Grilled Chicken Sandwich",
-  d7: "Steak Frites",
-  d8: "Sushi Roll Platter",
-  d9: "Chicken Curry",
-  d10: "Vegan Buddha Bowl",
-  d11: "Seafood Paella",
-  d12: "Pancake Stack",
-  d13: "Miso Ramen",
-  d14: "Beef Tacos",
-  d15: "Chocolate Brownie",
-  d16: "Lobster Bisque",
-  d17: "Mushroom Risotto",
-  d18: "Eggplant Parmesan",
-  d19: "Lemon Cheesecake",
-  d20: "Falafel Wrap",
-};
-
-const itemPriceMap = {
-  d1: "8.99",
-  d2: "12.99",
-  d3: "7.99",
-  d4: "10.99",
-  d5: "9.99",
-  d6: "10.99",
-  d7: "17.99",
-  d8: "15.99",
-  d9: "13.99",
-  d10: "11.99",
-  d11: "19.99",
-  d12: "8.99",
-  d13: "12.99",
-  d14: "9.99",
-  d15: "5.99",
-  d16: "14.99",
-  d17: "13.99",
-  d18: "11.99",
-  d19: "6.99",
-  d20: "8.99",
-};
 
 // Create a dark theme
 const theme = createTheme({
@@ -88,8 +42,31 @@ const OrderItem = styled("li")({
 });
 
 const ConfirmOrder = () => {
-  const orderData = JSON.parse(localStorage.getItem("order"));
-  const order = orderData ? orderData.order : null;
+  const [menuItems, setMenuItems] = useState({ names: {}, prices: {} });
+  const location = useLocation();
+  const order = location.state?.order;
+
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/menuitems");
+        const data = await response.json();
+
+        const itemNameMap = {};
+        const itemPriceMap = {};
+        data.forEach((item) => {
+          itemNameMap[item.id] = item.name;
+          itemPriceMap[item.id] = item.price;
+        });
+
+        setMenuItems({ names: itemNameMap, prices: itemPriceMap });
+      } catch (err) {
+        console.error("Error fetching menu items:", err);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
 
   if (!order) {
     return (
@@ -99,29 +76,45 @@ const ConfirmOrder = () => {
     );
   }
 
-  const handleClick = () => {
-    toast.success("Your order has been placed!", {
-      style: {
-        position: "top-center",
-        border: "1px solid orange",
-        padding: "16px",
-        color: "white",
-        background: "black",
-      },
-      iconTheme: {
-        primary: "orange",
-        secondary: "black",
-      },
-      duration: 5000,
-    });
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 5000);
+  const handleClick = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ order }),
+      });
+
+      if (response.ok) {
+        toast.success("Your order has been placed!", {
+          style: {
+            position: "top-center",
+            border: "1px solid orange",
+            padding: "16px",
+            color: "white",
+            background: "black",
+          },
+          iconTheme: {
+            primary: "orange",
+            secondary: "black",
+          },
+          duration: 2500,
+        });
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 5000);
+      } else {
+        console.error("Failed to create order");
+      }
+    } catch (err) {
+      console.error("Error submitting order:", err);
+    }
   };
 
-  // Calculate the total price
   const total = order.items.reduce((total, orderItem) => {
-    const itemPrice = parseFloat(itemPriceMap[orderItem.id]);
+    const itemId = orderItem.id;
+    const itemPrice = parseFloat(menuItems.prices[itemId]);
     if (itemPrice) {
       return total + orderItem.quantity * itemPrice;
     }
@@ -152,7 +145,7 @@ const ConfirmOrder = () => {
               <OrderLabel>Street:</OrderLabel>
               <OrderValue>{order.customer.street}</OrderValue>
               <OrderLabel>Postal Code:</OrderLabel>
-              <OrderValue>{order.customer["postal-code"]}</OrderValue>
+              <OrderValue>{order.customer.postalCode}</OrderValue>
               <OrderLabel>City:</OrderLabel>
               <OrderValue>{order.customer.city}</OrderValue>
             </Paper>
@@ -175,14 +168,16 @@ const ConfirmOrder = () => {
                 Order Items
               </Typography>
               <ul>
-                {order.items.map((item) => (
-                  <OrderItem
-                    key={item.id}
-                    sx={{ fontFamily: "Garamond", fontSize: "1.5rem" }}
-                  >
-                    {itemNameMap[item.id]}: x{item.quantity}
-                  </OrderItem>
-                ))}
+                {order.items.map((item) => {
+                  return (
+                    <OrderItem
+                      key={item.id}
+                      sx={{ fontFamily: "Garamond", fontSize: "1.5rem" }}
+                    >
+                      {menuItems.names[item.id]}: x{item.quantity}
+                    </OrderItem>
+                  );
+                })}
               </ul>
               <Typography
                 variant="h6"

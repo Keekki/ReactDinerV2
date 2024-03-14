@@ -25,12 +25,17 @@ const Cart = ({ closeCart }) => {
     };
   }, [closeCart]);
 
-  const total = Object.keys(cartItems).reduce(
-    (total, itemId) =>
-      total +
-      cartItems[itemId] * items.find((item) => item.id === itemId).price,
-    0
-  );
+  const getItemById = (itemId) => {
+    return items.find((item) => item.id === parseInt(itemId));
+  };
+
+  const total = Object.keys(cartItems).reduce((total, itemId) => {
+    const item = getItemById(itemId);
+    if (item) {
+      return total + cartItems[itemId] * item.price;
+    }
+    return total;
+  }, 0);
 
   return (
     <div ref={cartRef} className="cart">
@@ -39,25 +44,28 @@ const Cart = ({ closeCart }) => {
       ) : (
         <>
           {Object.keys(cartItems).map((itemId) => {
-            const item = items.find((item) => item.id === itemId);
-            const itemTotal = item.price * cartItems[itemId];
-            return (
-              <div key={itemId}>
-                <h3>
-                  {item.name} x{cartItems[itemId]}
-                </h3>
-                <p>${itemTotal.toFixed(2)}</p>
-                <DeleteForeverIcon
-                  onClick={() => removeFromCart(itemId)}
-                  style={{
-                    color: "red",
-                    cursor: "pointer",
-                    float: "right",
-                    marginTop: "-35px",
-                  }}
-                ></DeleteForeverIcon>
-              </div>
-            );
+            const item = getItemById(itemId);
+            if (item) {
+              const itemTotal = item.price * cartItems[itemId];
+              return (
+                <div key={itemId}>
+                  <h3>
+                    {item.name} x{cartItems[itemId]}
+                  </h3>
+                  <p>${itemTotal.toFixed(2)}</p>
+                  <DeleteForeverIcon
+                    onClick={() => removeFromCart(itemId)}
+                    style={{
+                      color: "red",
+                      cursor: "pointer",
+                      float: "right",
+                      marginTop: "-35px",
+                    }}
+                  ></DeleteForeverIcon>
+                </div>
+              );
+            }
+            return null;
           })}
           <p>Total: ${total.toFixed(2)}</p>
           <button className="order-button" onClick={order}>
