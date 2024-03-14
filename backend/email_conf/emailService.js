@@ -7,6 +7,7 @@ require("dotenv").config({
 
 const OAuth2 = google.auth.OAuth2;
 
+// Creating a transporter that sets the Google credentials for nodemailer
 const createTransporter = async () => {
   const oauth2Client = new OAuth2(
     process.env.CLIENT_ID,
