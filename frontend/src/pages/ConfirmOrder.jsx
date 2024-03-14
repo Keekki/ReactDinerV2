@@ -99,11 +99,11 @@ const ConfirmOrder = () => {
             primary: "orange",
             secondary: "black",
           },
-          duration: 2500,
+          duration: 5000,
         });
         setTimeout(() => {
           window.location.href = "/";
-        }, 5000);
+        }, 2500);
       } else {
         console.error("Failed to create order");
       }
