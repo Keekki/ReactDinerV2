@@ -1,4 +1,8 @@
 const jwt = require("jsonwebtoken");
+const path = require("path");
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 const verifyToken = (req, res, next) => {
   if (req.method === "OPTIONS") {
@@ -7,7 +11,7 @@ const verifyToken = (req, res, next) => {
 
   try {
     // Convention is BEARER $TOKEN
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       throw new Error("Authorization failed");
     }
