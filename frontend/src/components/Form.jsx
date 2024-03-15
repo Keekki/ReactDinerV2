@@ -5,14 +5,29 @@ import { toast } from "react-hot-toast";
 import "../styling/Form.css";
 
 const Form = ({ fields, submitHandler, submitLabel, title }) => {
+  // Initialize the form values state based on the fields prop
   const [values, setValues] = useState(
-    fields.reduce((acc, field) => ({ ...acc, [field.name]: "" }), {})
+    fields.reduce(
+      (acc, field) => ({ ...acc, [field.name]: field.value || "" }),
+      {}
+    )
   );
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false); // Track if the form has been submitted
+  const [submitted, setSubmitted] = useState(false);
+
+  // Update form values state when fields prop changes
+  useEffect(() => {
+    setValues(
+      fields.reduce(
+        (acc, field) => ({ ...acc, [field.name]: field.value || "" }),
+        {}
+      )
+    );
+  }, [fields]);
 
   const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setValues((prevValues) => ({ ...prevValues, [name]: value }));
   };
 
   const handleSubmit = async (event) => {
@@ -32,7 +47,7 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
     }
     // Check if credentials are ok
     const response = await submitHandler(values); // Await the submitHandler call
-    console.log("Response status:", response.status);
+
     if (response.status === 401) {
       newErrors.password = "Password is incorrect.";
     } else if (response.status === 200) {
@@ -82,7 +97,7 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
             value={values[field.name]}
             onChange={handleChange}
             required={field.required}
-            type={field.type}
+            type={field.type || "text"}
             error={submitted && !!errors[field.name]} // Ensure error is a boolean
             helperText={
               submitted && errors[field.name] ? errors[field.name] : ""

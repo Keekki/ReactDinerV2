@@ -24,7 +24,6 @@ const LoginForm = () => {
       });
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data);
         setUser(data);
         // On successful login, redirect the user
         navigate("/");

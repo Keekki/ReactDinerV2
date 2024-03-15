@@ -20,7 +20,6 @@ const SignUpForm = () => {
   ];
 
   const handleSignUpSubmit = async (values) => {
-    console.log(values);
     const response = await fetch("http://localhost:5000/api/users/signup", {
       method: "POST",
       headers: {
@@ -31,8 +30,6 @@ const SignUpForm = () => {
     });
 
     if (response.ok) {
-      const data = await response.json();
-      console.log("Sign Up Form Submitted:", data);
       navigate("/login"); // Navigate to the login page
     } else {
       console.error("Signup didn't work");

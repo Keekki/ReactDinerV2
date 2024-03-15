@@ -148,7 +148,38 @@ const loginUser = async (req, res) => {
   }
 };
 
+const getUserDetails = async (req, res) => {
+  const userId = req.params.userId; // Get the user ID from the verified token
+
+  try {
+    const results = await new Promise((resolve, reject) => {
+      db.all(
+        "SELECT id, name, email, street, postalCode, city FROM users WHERE id = ?",
+        [userId],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Return the user details
+    res.json(results[0]);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
 module.exports = {
   signUpUser,
   loginUser,
+  getUserDetails,
 };
