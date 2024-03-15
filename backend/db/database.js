@@ -51,6 +51,19 @@ db.serialize(() => {
     }
   );
 
+  const adminEmail = "matias.frimodig@tuni.fi";
+
+  db.run(
+    `UPDATE users SET admin = 1 WHERE email = ?`,
+    [adminEmail],
+    function (err) {
+      if (err) {
+        return console.error(err.message);
+      }
+      console.log(`Row(s) updated: ${this.changes}`);
+    }
+  );
+
   db.run(
     `CREATE TABLE IF NOT EXISTS orders (
        id VARCHAR(36) NOT NULL,
