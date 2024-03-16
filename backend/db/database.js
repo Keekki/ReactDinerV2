@@ -16,6 +16,7 @@ db.serialize(() => {
     price REAL,
     description TEXT,
     image TEXT,
+    category TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  )`,

@@ -12,12 +12,13 @@ exports.getAllMenuItems = (req, res) => {
 
 // Create a new menu item
 exports.createMenuItem = (req, res) => {
-  const sql = `INSERT INTO menu_items(name, price, description, image) VALUES(?,?,?,?)`;
+  const sql = `INSERT INTO menu_items(name, price, description, image, category) VALUES(?,?,?,?,?)`;
   const params = [
     req.body.name,
     req.body.price,
     req.body.description,
     req.body.image,
+    req.body.category,
   ];
   db.run(sql, params, function (err) {
     if (err) {
@@ -46,12 +47,13 @@ exports.updateMenuItem = (req, res) => {
       }
 
       // Update the menu item
-      const sql = `UPDATE menu_items SET name = ?, price = ?, description = ?, image = ? WHERE id = ?`;
+      const sql = `UPDATE menu_items SET name = ?, price = ?, description = ?, image = ?, category = ? WHERE id = ?`;
       const params = [
         req.body.name,
         req.body.price,
         req.body.description,
         req.body.image,
+        req.body.category,
         req.params.id,
       ];
 
@@ -72,5 +74,21 @@ exports.deleteMenuItem = (req, res) => {
       return res.status(400).json({ error: err.message });
     }
     res.status(200).json({ message: "Menu item deleted" });
+  });
+};
+
+// Find a menu item by its id
+exports.getMenuItemById = (req, res) => {
+  const id = req.params.id;
+  db.get("SELECT * FROM menu_items WHERE id = ?", [id], (err, row) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    if (row) {
+      res.status(200).json(row);
+    } else {
+      res.status(404).json({ message: "Menu item not found" });
+    }
   });
 };

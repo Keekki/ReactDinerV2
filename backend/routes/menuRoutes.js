@@ -6,5 +6,6 @@ router.get("/menuitems", menuController.getAllMenuItems);
 router.post("/menuitems", menuController.createMenuItem);
 router.put("/menuitems/:id", menuController.updateMenuItem);
 router.delete("/menuitems/:id", menuController.deleteMenuItem);
+router.get("/menuitems/:id", menuController.getMenuItemById);
 
 module.exports = router;
