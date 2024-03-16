@@ -9,8 +9,11 @@ import AboutUs from "./pages/AboutUs";
 import { CartProvider } from "./components/CartContext";
 import OrderForm from "./pages/OrderForm";
 import ConfirmOrder from "./pages/ConfirmOrder";
-import LoginForm from "./pages/LoginForm";
+import LoginForm from "./pages/LogInForm";
 import SignUpForm from "./pages/SignUpForm";
+import AddMenuItemForm from "./components/AddMenuItemForm";
+import DeleteMenuItemForm from "./components/DeleteMenuItemForm";
+import EditMenuItemForm from "./components/EditMenuItemForm";
 import { UserContextProvider } from "./components/UserContext";
 
 const App = () => {
@@ -37,6 +40,9 @@ const App = () => {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
+            <Route path="/add-menu-item" element={<AddMenuItemForm />} />
+            <Route path="/delete-menu-item" element={<DeleteMenuItemForm />} />
+            <Route path="/edit-menu-item" element={<EditMenuItemForm />} />
           </Routes>
           <Toaster position="top-center" reverseOrder={false} />
         </Router>
