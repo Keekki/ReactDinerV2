@@ -1,14 +1,11 @@
 import React, { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faRightToBracket,
-  faRightFromBracket,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faRightToBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { UserContext } from "./UserContext";
-import Cart from "./Cart";
+import { UserContext } from "./users/UserContext";
+import UserMenuPopup from "./users/UserMenuPopup";
+import Cart from "./cart/Cart";
 import "../styling/Header.css";
 
 const Header = () => {
@@ -52,16 +49,7 @@ const Header = () => {
               <div className="user-menu">
                 {user.name}
                 <FontAwesomeIcon icon={faUser} className="login-icon" />
-                <div className="user-menu-popup">
-                  <a>Your account:</a>
-                  <button onClick={handleLogout} className="logout-button">
-                    Log Out
-                    <FontAwesomeIcon
-                      icon={faRightFromBracket}
-                      className="logout-icon"
-                    />
-                  </button>
-                </div>
+                <UserMenuPopup user={user} handleLogout={handleLogout} />
               </div>
             ) : (
               <Link to="/login" className="login-link">

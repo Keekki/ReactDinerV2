@@ -58,6 +58,7 @@
   padding: 0;
   font-size: 1rem;
   font-family: Garamond;
+  margin-top: 15px;
   display: inline-flex; /* Align items horizontally */
   align-items: center; /* Center items vertically */
   transition: color 0.3s ease-in; /* Apply transition to color */
@@ -125,6 +126,7 @@
 
 .user-menu-popup {
   position: absolute;
+  cursor: default;
   top: 100%; /* Position it just below the user menu */
   left: 0;
   background-color: black;
@@ -142,4 +144,26 @@
 .user-menu:hover .user-menu-popup {
   opacity: 1; /* Fully visible on hover */
   visibility: visible; /* Make it visible on hover */
+}
+
+.user-menu-popup .admin-button {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  cursor: pointer !important;
+  height: 40px;
+  width: auto;
+  font-family: Garamond;
+  font-size: 1.1rem;
+  margin-top: 10px;
+  display: inline-block;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.user-menu-popup .admin-button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  transition: ease-in 0.2s;
 }

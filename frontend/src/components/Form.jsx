@@ -34,42 +34,50 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
     event.preventDefault();
     const newErrors = {};
     fields.forEach((field) => {
-      if (field.required && !values[field.name].trim()) {
+      const fieldValue = values[field.name];
+      if (typeof fieldValue === "string" && fieldValue.trim() === "") {
         newErrors[field.name] = `${field.label} is required`;
       }
     });
-    // Check if passwords match for sign-up form
+
     if (
       fields.some((field) => field.name === "passwordConfirmation") &&
       values.password !== values.passwordConfirmation
     ) {
       newErrors.passwordConfirmation = "Passwords do not match.";
     }
-    // Check if credentials are ok
-    const response = await submitHandler(values); // Await the submitHandler call
 
-    if (response.status === 401) {
-      newErrors.password = "Password is incorrect.";
-    } else if (response.status === 200) {
-      toast.success("Logged in!", {
-        style: {
-          border: "1px solid orange",
-          padding: "16px",
-          color: "white",
-          background: "black",
-          marginLeft: "1100px",
-        },
-        iconTheme: {
-          primary: "orange",
-          secondary: "black",
-        },
-      });
-    }
-    setErrors(newErrors);
-    setSubmitted(true); // Set submitted to true after attempting to submit
+    // Only proceed with submitHandler if there are no new errors
     if (Object.keys(newErrors).length === 0) {
-      submitHandler(values); // Use the submitHandler prop to handle submission
+      try {
+        const response = await submitHandler(values); // Await the submitHandler call
+
+        if (response && response.status === 401) {
+          newErrors.password = "Password is incorrect.";
+        } else if (response && response.status === 200) {
+          toast.success("Logged in!", {
+            style: {
+              border: "1px solid orange",
+              padding: "16px",
+              color: "white",
+              background: "black",
+              marginLeft: "1100px",
+            },
+            iconTheme: {
+              primary: "orange",
+              secondary: "black",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        // Handle the error appropriately in UI
+        toast.error("An error occurred. Please try again.");
+      }
     }
+
+    setErrors(newErrors);
+    setSubmitted(true);
   };
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import CartContext from "./CartContext.jsx";
-import "../styling/MenuItem.css";
+import CartContext from "../cart/CartContext.jsx";
+import "../../styling/MenuItem.css";
 
 const MenuItem = ({ item }) => {
   const { addToCart } = useContext(CartContext);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import MenuItem from "../components/MenuItem";
+import MenuItem from "./MenuItem";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import "../styling/Menu.css";
+import "../../styling/Menu.css";
 
 const Menu = () => {
   const [items, setItems] = useState([]);
@@ -28,11 +28,6 @@ const Menu = () => {
       });
   }, []);
 
-  const mainDishes = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 16, 17, 18, 20,
-  ];
-  const desserts = [12, 15, 19];
-
   if (isLoading) {
     return (
       <Box
@@ -46,20 +41,20 @@ const Menu = () => {
       >
         <CircularProgress color="inherit" />
       </Box>
-    ); // Show CircularProgress when loading
+    );
   }
 
   return (
     <div className="menu">
-      <h2 className="menu-header">Main dishes</h2>
+      <h2 className="menu-header">Main Dishes</h2>
       {items
-        .filter((item) => mainDishes.includes(item.id))
+        .filter((item) => item.category === "main")
         .map((item) => (
           <MenuItem key={item.id} item={item} />
         ))}
       <h2 className="menu-header">Desserts</h2>
       {items
-        .filter((item) => desserts.includes(item.id))
+        .filter((item) => item.category === "dessert")
         .map((item) => (
           <MenuItem key={item.id} item={item} />
         ))}

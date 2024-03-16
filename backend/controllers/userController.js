@@ -154,7 +154,7 @@ const getUserDetails = async (req, res) => {
   try {
     const results = await new Promise((resolve, reject) => {
       db.all(
-        "SELECT id, name, email, street, postalCode, city FROM users WHERE id = ?",
+        "SELECT id, name, email, street, postalCode, city, admin FROM users WHERE id = ?",
         [userId],
         (err, rows) => {
           if (err) {

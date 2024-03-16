@@ -1,58 +1,38 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
-import CartContext from "../components/CartContext";
-import { UserContext } from "../components/UserContext";
+import CartContext from "../components/cart/CartContext";
+import { UserContext } from "../components/users/UserContext";
 
 const OrderForm = () => {
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
-  const { user } = useContext(UserContext);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    street: "",
-    postalCode: "",
-    city: "",
-  });
+  const { user } = useContext(UserContext); // Consuming user data from UserContext
 
-  useEffect(() => {
-    if (user && user.id) {
-      fetch(`http://localhost:5000/api/users/details/${user.id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-          "Content-Type": "application/json",
+  const fields = user
+    ? [
+        { name: "name", label: "Name", required: true, value: user.name || "" },
+        {
+          name: "email",
+          label: "Email",
+          required: true,
+          value: user.email || "",
         },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setFormData({
-            name: data.name || "",
-            email: data.email || "",
-            street: data.street || "",
-            postalCode: data.postalCode || "",
-            city: data.city || "",
-          });
-        })
-        .catch((error) =>
-          console.error("Failed to fetch user details:", error)
-        );
-    }
-  }, [user]);
-
-  const fields = [
-    { name: "name", label: "Name", required: true, value: formData.name },
-    { name: "email", label: "Email", required: true, value: formData.email },
-    { name: "street", label: "Street", required: true, value: formData.street },
-    {
-      name: "postalCode",
-      label: "Postal Code",
-      required: true,
-      value: formData.postalCode,
-    },
-    { name: "city", label: "City", required: true, value: formData.city },
-  ];
+        {
+          name: "street",
+          label: "Street",
+          required: true,
+          value: user.street || "",
+        },
+        {
+          name: "postalCode",
+          label: "Postal Code",
+          required: true,
+          value: user.postalCode || "",
+        },
+        { name: "city", label: "City", required: true, value: user.city || "" },
+      ]
+    : [];
 
   const handleOrderSubmit = (values) => {
     const orderData = {

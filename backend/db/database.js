@@ -16,6 +16,7 @@ db.serialize(() => {
     price REAL,
     description TEXT,
     image TEXT,
+    category TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
  )`,
@@ -86,18 +87,32 @@ db.serialize(() => {
     }
   );
 
-  fs.readFile("./db/init.sql", "utf8", (err, data) => {
+  // Check if the menu_items table is empty
+  db.get("SELECT COUNT(*) AS count FROM menu_items", (err, row) => {
     if (err) {
       console.error(err.message);
-      return;
+    } else if (row.count === 0) {
+      console.log("The menu_items table is empty. Inserting data.");
+
+      // The table is empty, proceed to insert data from init.sql
+      fs.readFile("./db/init.sql", "utf8", (err, data) => {
+        if (err) {
+          console.error(err.message);
+          return;
+        }
+        db.exec(data, (err) => {
+          if (err) {
+            console.error(err.message);
+          } else {
+            console.log("Data inserted successfully.");
+          }
+        });
+      });
+    } else {
+      console.log(
+        "The menu_items table already has data. No data was inserted."
+      );
     }
-    db.exec(data, (err) => {
-      if (err) {
-        console.error(err.message);
-      } else {
-        console.log("Data inserted successfully.");
-      }
-    });
   });
 });
 
