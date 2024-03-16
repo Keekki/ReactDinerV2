@@ -71,7 +71,7 @@ const Form = ({ fields, submitHandler, submitLabel, title }) => {
         }
       } catch (error) {
         console.error("Error submitting form:", error);
-        // Handle the error appropriately in your UI
+        // Handle the error appropriately in UI
         toast.error("An error occurred. Please try again.");
       }
     }

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 import { UserContext } from "./UserContext";
-import "../styling/Header.css";
+import "../../styling/Header.css";
 
 const UserMenuPopup = ({ handleLogout }) => {
   const { user } = useContext(UserContext);

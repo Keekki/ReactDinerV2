@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import MenuItem from "../components/MenuItem";
+import MenuItem from "./MenuItem";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import "../styling/Menu.css";
+import "../../styling/Menu.css";
 
 const Menu = () => {
   const [items, setItems] = useState([]);

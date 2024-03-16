@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
-import CartContext from "../components/CartContext";
-import { UserContext } from "../components/UserContext";
+import CartContext from "../components/cart/CartContext";
+import { UserContext } from "../components/users/UserContext";
 
 const OrderForm = () => {
   const navigate = useNavigate();

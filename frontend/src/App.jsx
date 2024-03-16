@@ -3,18 +3,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
-import Menu from "./pages/Menu";
-import Cart from "./components/Cart";
+import Menu from "./components/menu/Menu";
+import Cart from "./components/cart/Cart";
 import AboutUs from "./pages/AboutUs";
-import { CartProvider } from "./components/CartContext";
+import { CartProvider } from "./components/cart/CartContext";
 import OrderForm from "./pages/OrderForm";
 import ConfirmOrder from "./pages/ConfirmOrder";
-import LoginForm from "./pages/LogInForm";
-import SignUpForm from "./pages/SignUpForm";
-import AddMenuItemForm from "./components/AddMenuItemForm";
-import DeleteMenuItemForm from "./components/DeleteMenuItemForm";
-import EditMenuItemForm from "./components/EditMenuItemForm";
-import { UserContextProvider } from "./components/UserContext";
+import LoginForm from "./components/users/LoginForm";
+import SignUpForm from "./components/users/SignUpForm";
+import AddMenuItemForm from "./components/users/admin/AddMenuItemForm";
+import DeleteMenuItemForm from "./components/users/admin/DeleteMenuItemForm";
+import EditMenuItemForm from "./components/users/admin/EditMenuItemForm";
+import { UserContextProvider } from "./components/users/UserContext";
 
 const App = () => {
   const [items, setItems] = useState([]);

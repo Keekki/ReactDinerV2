@@ -2,7 +2,7 @@ import React, { useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CartContext from "./CartContext";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import "../styling/Cart.css";
+import "../../styling/Cart.css";
 
 const Cart = ({ closeCart }) => {
   const { cartItems, removeFromCart, items } = useContext(CartContext);

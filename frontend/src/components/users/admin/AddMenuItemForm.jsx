@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { toast } from "react-hot-toast";
-import Form from "./Form";
-import { UserContext } from "./UserContext";
+import Form from "../../Form";
+import { UserContext } from "../UserContext";
 
 const AddMenuItemForm = () => {
   const { user } = useContext(UserContext);

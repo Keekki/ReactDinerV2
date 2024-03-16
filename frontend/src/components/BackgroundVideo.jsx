@@ -21,6 +21,7 @@ const BackgroundVideo = () => {
   return (
     <div className="background-video">
       <video
+        data-testid="background-video"
         ref={videoRef}
         src={`http://localhost:5000/assets/videos/${videos[currentVideo]}`}
         autoPlay

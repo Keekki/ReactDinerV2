@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../components/UserContext";
-import Form from "../components/Form";
+import { UserContext } from "./UserContext";
+import Form from "../Form";
 
 const LoginForm = () => {
   const navigate = useNavigate();

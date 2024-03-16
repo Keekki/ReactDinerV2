@@ -3,9 +3,9 @@ import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { UserContext } from "./UserContext";
-import UserMenuPopup from "./UserMenuPopup";
-import Cart from "./Cart";
+import { UserContext } from "./users/UserContext";
+import UserMenuPopup from "./users/UserMenuPopup";
+import Cart from "./cart/Cart";
 import "../styling/Header.css";
 
 const Header = () => {

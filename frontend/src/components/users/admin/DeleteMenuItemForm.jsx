@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
-import Form from "./Form";
-import { UserContext } from "./UserContext";
+import Form from "../../Form";
+import { UserContext } from "../UserContext";
 
 const DeleteMenuItemForm = () => {
   const { user } = useContext(UserContext);
