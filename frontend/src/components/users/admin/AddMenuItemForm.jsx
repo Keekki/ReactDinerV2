@@ -23,14 +23,17 @@ const AddMenuItemForm = () => {
   // Function to handle form submission
   const handleSubmit = async (values) => {
     try {
-      const response = await fetch("http://localhost:5000/api/menuitems", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`, // Use the token from UserContext
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/menuitems`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`, // Use the token from UserContext
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to add new menu item");

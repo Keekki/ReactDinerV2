@@ -15,7 +15,7 @@ export const UserContextProvider = ({ children }) => {
   }, []);
 
   const fetchUserData = (userId, token) => {
-    fetch(`http://localhost:5000/api/users/details/${userId}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/users/details/${userId}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

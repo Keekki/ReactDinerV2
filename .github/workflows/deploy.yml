@@ -51,6 +51,9 @@ jobs:
           push: true
           tags: "${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}"
 
+      - name: Create production .env file from secret
+        run: echo "${{ secrets.ENV_FILE_PROD }}" > ./frontend/.env
+
       - name: Build and Push the Frontend Image
         uses: docker/build-push-action@v5.0.0
         with:
@@ -98,22 +101,28 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.REMOTE_SERVER }} >> ~/.ssh/known_hosts
 
-            # Create stack config and sync to the VM server
-
-      - name: Create and sync stack configuration
+      # Create stack config and sync to the VM server
+      - name: Prepare stack configuration
         run: |
-          mkdir -p dine_backend
-          cp docker-compose.server.yml dine_backend/docker-compose.yml
-          echo "${{ secrets.PROD_ENV_FILE }}" > dine_backend/.env
-          echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}" >> dine_backend/.env
-          rsync -r dine_backend "${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }}:./"
+          mkdir -p dine/dine_backend
+          mkdir -p dine/dine_frontend
+          cp docker-compose.server.yml dine/docker-compose.yml
+          echo "${{ secrets.PROD_ENV_FILE }}" > dine/.env
+          echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}" >> dine/.env
+          echo "FRONTEND_IMAGE=${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}" >> dine/.env
+          cp backend/.env.production dine/dine_backend/.env
+          cp frontend/.env.production dine/dine_frontend/.env
+
+      # Sync the configuration to the remote server
+      - name: Sync stack configuration to remote server
+        run: rsync -r dine "${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }}:./"
 
       # SSH into VM server and bring up the stack
       - name: Start containers via SSH
         run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_SERVER }}
           "
           docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }};
-          cd dine_backend;
+          cd dine;
           docker-compose pull;
           docker-compose up -d;
           "

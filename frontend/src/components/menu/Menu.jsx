@@ -10,7 +10,7 @@ const Menu = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/menuitems")
+    fetch(`${import.meta.env.VITE_API_URL}/api/menuitems`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

@@ -19,33 +19,27 @@ const createTransporter = async () => {
     refresh_token: process.env.REFRESH_TOKEN,
   });
 
-  const accessToken = await new Promise((resolve, reject) => {
-    oauth2Client.getAccessToken((err, token) => {
-      if (err) {
-        console.error("Failed to create access token:", err);
-        reject(err);
-      } else {
-        resolve(token);
-      }
+  try {
+    const { token } = await oauth2Client.getAccessToken();
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.EMAIL,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: token,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
-  });
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: process.env.EMAIL,
-      clientId: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      refreshToken: process.env.REFRESH_TOKEN,
-      accessToken: accessToken,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
-
-  return transporter;
+    return transporter;
+  } catch (err) {
+    console.error("Failed to create access token:", err);
+    throw err; // Rethrow the error to handle it in the calling function
+  }
 };
 
 const sendEmail = async (emailOptions) => {

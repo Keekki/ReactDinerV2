@@ -14,7 +14,7 @@ const DeleteMenuItemForm = () => {
   const handleSubmit = async (values) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/menuitems/${values.id}`,
+        `${import.meta.env.VITE_API_URL}/api/menuitems/${values.id}`,
         {
           method: "DELETE",
           headers: {

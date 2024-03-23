@@ -13,7 +13,7 @@ const EditMenuItemForm = () => {
     try {
       const menuItemId = parseInt(values.id, 10);
       const response = await fetch(
-        `http://localhost:5000/api/menuitems/${menuItemId}`,
+        `${import.meta.env.VITE_API_URL}/api/menuitems/${menuItemId}`,
         {
           method: "GET",
           headers: {
@@ -43,7 +43,7 @@ const EditMenuItemForm = () => {
   const handleEditSubmit = async (values) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/menuitems/${menuItemId}`,
+        `${import.meta.env.VITE_API_URL}/api/menuitems/${menuItemId}`,
         {
           method: "PUT",
           headers: {
