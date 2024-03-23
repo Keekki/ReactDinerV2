@@ -110,8 +110,6 @@ jobs:
           echo "${{ secrets.PROD_ENV_FILE }}" > dine/.env
           echo "BACKEND_IMAGE=${{ env.REGISTRY }}/${{ env.BACKEND_IMAGE_NAME }}" >> dine/.env
           echo "FRONTEND_IMAGE=${{ env.REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}" >> dine/.env
-          cp backend/.env dine/dine_backend/.env
-          cp frontend/.env dine/dine_frontend/.env
 
       # Sync the configuration to the remote server
       - name: Sync stack configuration to remote server
