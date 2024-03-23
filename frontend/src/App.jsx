@@ -20,7 +20,7 @@ const App = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/menuitems")
+    fetch(`${import.meta.env.VITE_API_URL}/api/menuitems`)
       .then((response) => response.json())
       .then((data) => setItems(data))
       .catch((error) => console.error(error));

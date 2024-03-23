@@ -23,7 +23,9 @@ const BackgroundVideo = () => {
       <video
         data-testid="background-video"
         ref={videoRef}
-        src={`http://localhost:5000/assets/videos/${videos[currentVideo]}`}
+        src={`${import.meta.env.VITE_API_URL}/assets/videos/${
+          videos[currentVideo]
+        }`}
         autoPlay
         loop
         muted

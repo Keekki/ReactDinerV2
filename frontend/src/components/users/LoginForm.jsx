@@ -14,14 +14,17 @@ const LoginForm = () => {
 
   const handleLoginSubmit = async (values) => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/login`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
       if (response.status === 200) {
         const data = await response.json();
         setUser(data);

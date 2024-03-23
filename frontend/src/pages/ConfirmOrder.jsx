@@ -49,7 +49,9 @@ const ConfirmOrder = () => {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/menuitems");
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/menuitems`
+        );
         const data = await response.json();
 
         const itemNameMap = {};
@@ -78,13 +80,16 @@ const ConfirmOrder = () => {
 
   const handleClick = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ order }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/orders`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ order }),
+        }
+      );
 
       if (response.ok) {
         toast.success("Your order has been placed!", {
