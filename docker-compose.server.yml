@@ -6,3 +6,11 @@ services:
     env_file:
       - .env
     restart: always
+
+  frontend:
+    image: ${FRONTEND_IMAGE}
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    restart: always
