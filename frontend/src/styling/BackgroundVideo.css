@@ -1,0 +1,28 @@
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  background-color: black;
+}
+
+.background-video .video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out;
+}
+
+.background-video .video.fade-out {
+  opacity: 0;
+}
+
+.background-video .video.fade-in {
+  opacity: 1;
+}
